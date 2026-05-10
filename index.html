@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AlgoEdge Pro — Premium Algo Trading Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060c;--card:rgba(255,255,255,0.03);--card2:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.04);--border2:rgba(255,255,255,0.07);--border3:rgba(255,255,255,0.12);--text:#f0f0f5;--muted:#6b6b80;--muted2:#9090a8;--gold:#C5A55A;--gold2:#B8944D;--gold3:#D4B96A;--gold-bg:rgba(197,165,90,0.04);--tea:#6bbd5f;--terra:#d47a5a;--blue:#5a9cf0;--red:#ef4444;--font:'Inter',sans-serif;--display:'Playfair Display',serif;--serif:'Noto Serif',serif;--mono:'Space Mono',monospace;--shadow-3d:0 1px 3px rgba(0,0,0,.4),0 4px 8px rgba(0,0,0,.3),0 8px 16px rgba(0,0,0,.2),0 16px 32px rgba(0,0,0,.15);--shadow-float:0 20px 60px rgba(0,0,0,.4)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%)}
+.hidden{display:none!important}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.anim-up{animation:fadeInUp .7s cubic-bezier(.16,1,.3,1) both}
+.d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}.d6{animation-delay:.3s}
+
+#tnc-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(6,6,12,.97);backdrop-filter:blur(40px);animation:fadeIn .4s ease}
+.tnc-box{width:min(720px,96vw);max-height:94vh;background:rgba(14,14,28,.98);border:1px solid var(--border2);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 100px rgba(0,0,0,.5);animation:scaleIn .4s cubic-bezier(.16,1,.3,1)}
+.tnc-top{padding:28px 32px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(197,165,90,.03),transparent)}
+.tnc-logo{font-family:var(--display);font-size:26px;font-weight:700;color:var(--text)}
+.tnc-logo i{font-style:italic;color:var(--gold)}
+.tnc-sub{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.tnc-progress{margin-top:14px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.tnc-progress-bar{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold3));border-radius:2px;transition:width .3s}
+.tnc-scroll{flex:1;overflow-y:auto;padding:24px 32px}
+.tnc-scroll::-webkit-scrollbar{width:4px}
+.tnc-scroll::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
+.tnc-scroll h1{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text2);margin-bottom:4px}
+.tnc-scroll .tnc-meta{font-size:10px;color:var(--muted);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.tnc-scroll h3{font-family:var(--display);font-size:13px;font-weight:600;color:var(--gold);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.tnc-scroll h4{font-family:var(--display);font-size:12px;font-weight:600;color:var(--text2);margin:14px 0 6px}
+.tnc-scroll p{font-size:11.5px;color:var(--muted2);line-height:1.85;margin-bottom:8px}
+.tnc-scroll strong{color:var(--text)}
+.tnc-scroll ul,.tnc-scroll ol{padding-left:18px;margin-bottom:10px}
+.tnc-scroll li{font-size:11.5px;color:var(--muted2);line-height:1.8;margin-bottom:4px}
+.tnc-scroll li::marker{color:var(--gold)}
+.tnc-bottom{padding:18px 32px;border-top:1px solid var(--border);background:rgba(6,6,12,.5);display:flex;gap:12px;align-items:center}
+.tnc-check{display:flex;align-items:center;gap:8px;flex:1;font-size:11px;color:var(--muted);cursor:pointer}
+.tnc-check input{accent-color:var(--gold);width:14px;height:14px}
+.btn-decline{padding:12px 20px;background:transparent;border:1px solid var(--border2);border-radius:12px;color:var(--muted);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .25s;white-space:nowrap}
+.btn-decline:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.05)}
+.btn-accept{padding:12px 24px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:12px;color:var(--bg);font-family:var(--display);font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;white-space:nowrap;box-shadow:0 4px 20px rgba(197,165,90,.15)}
+.btn-accept:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(197,165,90,.25)}
+.btn-accept:disabled{opacity:.35;cursor:not-allowed}
+#blocked{position:fixed;inset:0;z-index:9998;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:32px;animation:fadeInUp .4s ease}
+
+#auth-screen{position:fixed;inset:0;z-index:998;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow-y:auto;animation:fadeInUp .5s ease}
+.auth-container{width:min(1050px,100%);min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center}
+@media(max-width:768px){.auth-container{grid-template-columns:1fr}.auth-left-panel{display:none!important}}
+.auth-left-panel{padding:60px;display:flex;flex-direction:column;gap:32px}
+.auth-left-panel .brand{font-family:var(--display);font-size:22px;font-weight:700;color:var(--text)}
+.auth-left-panel .brand i{font-style:italic;color:var(--gold)}
+.auth-left-panel h1{font-family:var(--display);font-size:clamp(30px,4vw,48px);font-weight:700;line-height:1.08}
+.auth-left-panel h1 em{font-style:normal;color:var(--gold)}
+.auth-left-panel p{color:var(--muted2);font-size:14px;line-height:1.8;max-width:340px}
+.auth-left-stats{display:flex;gap:16px}
+.als{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:16px 20px;transition:all .3s}
+.als:hover{box-shadow:var(--shadow-float);transform:translateY(-2px)}
+.als label{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.als span{font-family:var(--display);font-size:22px;color:var(--terra);font-weight:700}
+.auth-right-panel{padding:40px;display:flex;align-items:center;justify-content:center}
+.auth-card{width:100%;max-width:400px;background:rgba(14,14,28,.9);border:1px solid var(--border3);border-radius:24px;padding:36px;position:relative;overflow:hidden;box-shadow:0 0 80px rgba(0,0,0,.4);animation:scaleIn .5s cubic-bezier(.16,1,.3,1)}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.auth-tabs{display:flex;background:rgba(255,255,255,.03);border-radius:14px;padding:4px;gap:4px;margin-bottom:28px;border:1px solid var(--border)}
+.auth-tab{flex:1;padding:11px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;border-radius:10px;transition:all .25s;color:var(--muted);font-family:var(--display)}
+.auth-tab.active{background:var(--card2);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.inp{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:14px;padding:14px 16px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:all .25s}
+.inp:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.08)}
+.inp::placeholder{color:var(--muted)}
+.ph-row{display:flex;gap:8px}
+.ph-pfx{padding:14px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:14px;color:var(--muted);font-family:var(--mono);font-size:13px;white-space:nowrap}
+.forgot-link{text-align:right;font-size:11px;color:var(--gold);cursor:pointer;margin-top:6px}
+.main-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:14px;color:var(--bg);font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(197,165,90,.1)}
+.main-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(197,165,90,.2)}
+.divider{text-align:center;color:var(--muted);font-size:11px;margin:20px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:linear-gradient(90deg,transparent,var(--border2))}
+.divider::before{left:0}.divider::after{right:0;background:linear-gradient(90deg,var(--border2),transparent)}
+.google-btn{width:100%;padding:14px;background:transparent;border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:var(--font);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .25s}
+.google-btn:hover{border-color:var(--gold);background:rgba(197,165,90,.04)}
+.auth-disclaimer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;line-height:1.7}
+
+nav{position:fixed;top:0;inset-x:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:all .4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(6,6,12,.85);backdrop-filter:blur(24px);border-bottom-color:var(--border);box-shadow:0 4px 30px rgba(0,0,0,.3)}
+.nav-logo{font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);cursor:pointer}
+.nav-logo i{font-style:italic;color:var(--gold)}
+.nav-center{display:flex;gap:2px}
+.nav-lnk{padding:8px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:10px;transition:all .25s;position:relative}
+.nav-lnk:hover{color:var(--text);background:var(--card)}
+.nav-lnk.on{color:var(--gold)}
+.nav-lnk.on::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:16px;height:2px;background:var(--gold);border-radius:1px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.search-box{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:8px 14px;transition:all .25s}
+.search-box:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.06)}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-family:var(--font);font-size:13px;width:150px}
+.search-box input::placeholder{color:var(--muted)}
+.nav-icon-btn{width:38px;height:38px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;position:relative;color:var(--muted);font-size:16px}
+.nav-icon-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(197,165,90,.04)}
+.badge{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;background:var(--terra);border-radius:9px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--bg);padding:0 4px}
+.user-av{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--terra));display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:700;cursor:pointer;color:var(--bg);transition:all .25s}
+.user-av:hover{transform:translateY(-2px)}
+
+#app{padding-top:64px;position:relative;z-index:1}
+.hero{max-width:1200px;margin:0 auto;padding:72px 28px 56px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;background:var(--gold-bg);border:1px solid rgba(197,165,90,.15);border-radius:100px;font-size:11px;color:var(--gold);font-family:var(--mono);margin-bottom:28px}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.hero h1{font-family:var(--display);font-size:clamp(36px,5.2vw,68px);font-weight:700;line-height:1.06;margin-bottom:22px}
+.hero h1 .g{color:var(--gold);font-style:italic;font-weight:500}
+.hero-sub{color:var(--muted2);font-size:16px;max-width:460px;line-height:1.8;margin-bottom:40px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.cta-primary{padding:15px 30px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:14px;color:var(--bg);font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px rgba(197,165,90,.12)}
+.cta-primary:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(197,165,90,.2)}
+.cta-secondary{padding:15px 30px;background:transparent;border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:var(--font);font-size:15px;cursor:pointer;transition:all .25s}
+.cta-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:18px;overflow:hidden;max-width:660px}
+.hs{background:rgba(255,255,255,.02);padding:22px 24px;transition:all .3s}
+.hs:hover{background:rgba(255,255,255,.04);transform:translateY(-2px)}
+.hs .n{font-family:var(--display);font-size:24px;color:var(--terra);display:block;margin-bottom:4px;font-weight:700}
+.hs .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+.market-section{max-width:1200px;margin:0 auto;padding:0 28px 28px}
+.sec-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}
+.market-pills{display:flex;gap:10px;flex-wrap:wrap}
+.mpill{display:flex;align-items:center;gap:8px;padding:12px 22px;background:var(--card);border:1px solid var(--border2);border-radius:14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .3s;color:var(--muted)}
+.mpill:hover{border-color:var(--border3);color:var(--text);transform:translateY(-2px)}
+.mpill.on{border-color:var(--gold);color:var(--gold);background:var(--gold-bg);box-shadow:0 8px 24px rgba(197,165,90,.08)}
+.mpill.on .mdot{background:var(--gold)}
+.mdot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:all .3s}
+
+.filters{max-width:1200px;margin:0 auto;padding:0 28px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fsel{appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.03) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b6b80'/%3E%3C/svg%3E") no-repeat right 14px center;border:1px solid var(--border2);border-radius:12px;padding:10px 36px 10px 14px;color:var(--muted);font-family:var(--font);font-size:12.5px;cursor:pointer;outline:none;transition:all .25s}
+.fsel:hover,.fsel:focus{border-color:var(--gold);color:var(--text)}
+.fsel option{background:#12121f;color:var(--text)}
+.fclear{padding:10px 14px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:11px;cursor:pointer;transition:all .25s;font-family:var(--font)}
+.fclear:hover{border-color:var(--red);color:var(--red)}
+
+.prods-wrap{max-width:1200px;margin:0 auto;padding:0 28px 80px}
+.prods-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.prods-cnt{font-size:12px;color:var(--muted)}.prods-cnt b{color:var(--gold);font-family:var(--display)}
+.prods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+.pcard-wrap{perspective:1200px}
+.pcard{background:var(--card);backdrop-filter:blur(20px) saturate(1.3);border:1px solid var(--border2);border-radius:22px;overflow:hidden;cursor:pointer;transition:box-shadow .4s,transform .12s;transform-style:preserve-3d;position:relative;will-change:transform;box-shadow:var(--shadow-3d)}
+.pcard::before{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent 50%);pointer-events:none;z-index:3}
+.pcard::after{content:'';position:absolute;inset:-1px;border-radius:23px;background:linear-gradient(135deg,rgba(197,165,90,0),rgba(181,97,63,0),rgba(90,156,240,0));z-index:-1;transition:background .4s;pointer-events:none}
+.pcard:hover::after{background:linear-gradient(135deg,rgba(197,165,90,.12),rgba(181,97,63,.08),rgba(90,156,240,.05))}
+.pcard:hover{box-shadow:var(--shadow-3d),0 0 40px rgba(197,165,90,.05)}
+.pcard-preview{height:155px;position:relative;overflow:hidden}
+.pcard-badges{position:absolute;top:14px;left:14px;z-index:4;display:flex;gap:6px}
+.pbadge{padding:5px 11px;border-radius:8px;font-size:9.5px;font-weight:700;font-family:var(--mono);letter-spacing:.06em;backdrop-filter:blur(8px)}
+.pbadge-s{background:rgba(181,97,63,.12);color:var(--terra);border:1px solid rgba(181,97,63,.15)}
+.pbadge-i{background:rgba(90,156,240,.08);color:var(--tea);border:1px solid rgba(90,156,240,.12)}
+.pbadge-free{background:var(--tea);color:var(--bg);border:1px solid var(--tea)}
+.pcard-body{padding:20px;position:relative;z-index:2}
+.pc-name{font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:5px;line-height:1.3}
+.pc-desc{font-size:11.5px;color:var(--muted2);line-height:1.7;margin-bottom:12px}
+.pc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.pc-tag{padding:3px 9px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--muted)}
+.pc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px}
+.pcm{background:rgba(255,255,255,.02);border-radius:10px;padding:9px 6px;text-align:center;border:1px solid var(--border)}
+.pcm .v{font-family:var(--mono);font-size:11.5px;color:var(--terra);display:block;font-weight:700}
+.pcm .k{font-size:8.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.pc-footer{display:flex;align-items:center;justify-content:space-between}
+.pc-price{font-family:var(--display);font-size:18px;font-weight:700}
+.pc-btns{display:flex;gap:8px}
+.pc-cart{width:36px;height:36px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;font-size:14px}
+.pc-cart:hover{border-color:var(--gold);background:var(--gold-bg)}
+.pc-order{padding:9px 16px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:10px;color:var(--bg);font-size:11.5px;font-weight:700;cursor:pointer;transition:all .25s;font-family:var(--display)}
+.pc-order:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(197,165,90,.15)}
+.no-res{grid-column:1/-1;text-align:center;padding:80px 20px}
+.no-res h3{font-family:var(--display);font-size:22px;color:var(--muted2);margin-bottom:8px}
+.no-res p{color:var(--muted);font-size:13px}
+
+.reviews-sec{max-width:1200px;margin:0 auto;padding:0 28px 80px}
+.sec-title{font-family:var(--display);font-size:30px;font-weight:700;margin-bottom:6px}
+.sec-sub{color:var(--muted2);font-size:13px;margin-bottom:32px}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;transition:all .35s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.rcard:hover{border-color:var(--border3);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.rcard-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.rav{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:700;color:var(--bg)}
+.rname{font-size:14px;font-weight:600}.rloc{font-size:10px;color:var(--muted);margin-top:2px}
+.rstars{font-size:11px;color:var(--gold);margin-bottom:8px;letter-spacing:1px}
+.rtext{font-size:12.5px;color:var(--muted2);line-height:1.75;font-style:italic;font-family:var(--serif)}
+.ralgo{font-size:9.5px;color:var(--terra);margin-top:10px;font-family:var(--mono);opacity:.7}
+
+.footer{border-top:1px solid var(--border);padding:48px 28px 28px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:700px){.footer{grid-template-columns:1fr 1fr;gap:24px}}
+.footer-brand h3{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:10px}.footer-brand h3 i{font-style:italic;color:var(--gold)}
+.footer-brand p{font-size:12.5px;color:var(--muted2);line-height:1.85}
+.footer-col h4{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px}
+.footer-col a{display:block;font-size:12.5px;color:var(--muted2);margin-bottom:10px;text-decoration:none;cursor:pointer;transition:all .2s}
+.footer-col a:hover{color:var(--gold);transform:translateX(4px)}
+.footer-bar{border-top:1px solid var(--border);max-width:1200px;margin:0 auto;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-bar p{font-size:11px;color:var(--muted)}
+.pay-row{display:flex;gap:8px}
+.paybadge{padding:5px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:10px;color:var(--muted);font-family:var(--mono)}
+
+#market-page{max-width:1200px;margin:0 auto;padding:24px 28px 80px}
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.mkt-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.mkt-card:hover{border-color:var(--border3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.mkt-name{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.mkt-val{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:4px}
+.mkt-chg{font-size:12px;font-weight:600}.up{color:var(--tea)}.dn{color:var(--red)}
+
+#my-algo-page{max-width:1200px;margin:0 auto;padding:24px 28px 80px}
+.page-hdr{margin-bottom:32px}.page-hdr h2{font-family:var(--display);font-size:32px;font-weight:700}.page-hdr p{color:var(--muted2);margin-top:6px;font-size:14px}
+.myalgo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px}
+.mac{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:24px;position:relative;overflow:hidden;transition:all .3s}
+.mac:hover{border-color:rgba(197,165,90,.12);transform:translateY(-3px)}
+.mac::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--terra),var(--tea))}
+.mac-name{font-family:var(--display);font-size:16px;font-weight:700;margin-bottom:4px}.mac-meta{font-size:10.5px;color:var(--muted);margin-bottom:16px}
+.mac-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.mac-info-item{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.mac-info-item .mi-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.mac-info-item .mi-val{font-family:var(--mono);font-size:12px;color:var(--terra);font-weight:700}
+.dl-btn{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.dl-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+#cart-drawer{position:fixed;top:0;right:-420px;bottom:0;width:400px;background:rgba(6,6,12,.96);backdrop-filter:blur(30px);border-left:1px solid var(--border2);z-index:200;transition:right .35s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+#cart-drawer.open{right:0}
+.cart-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid var(--border)}
+.cart-hdr h3{font-family:var(--display);font-size:20px;font-weight:700}
+.cart-x{width:34px;height:34px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.cart-x:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.06)}
+.cart-body{flex:1;overflow-y:auto;padding:16px 24px}.cart-body::-webkit-scrollbar{width:4px}.cart-body::-webkit-scrollbar-thumb{background:var(--border3)}
+.ci{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:14px;transition:all .25s}
+.ci:hover{border-color:var(--border3)}.ci-info{flex:1}.ci-name{font-size:13px;font-weight:600;margin-bottom:3px}.ci-price{font-family:var(--display);font-size:12px;color:var(--terra)}
+.ci-rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.ci-rm:hover{color:var(--red);background:rgba(239,68,68,.06)}
+.cart-footer{padding:20px 24px;border-top:1px solid var(--border)}
+.ctot{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted2);margin-bottom:8px}
+.ctot.big{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);margin-top:12px}
+.ctot.big .p{color:var(--terra)}
+.checkout-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:14px;color:var(--bg);font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;transition:all .25s}
+.checkout-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(197,165,90,.2)}
+.empty-cart{text-align:center;padding:60px 20px;color:var(--muted)}
+
+#product-detail{position:fixed;inset:0;z-index:250;background:var(--bg);overflow-y:auto;animation:fadeIn .3s ease}
+.pd-container{max-width:1400px;margin:0 auto;padding:80px 32px 60px}
+.pd-back{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--card);border:1px solid var(--border2);border-radius:12px;color:var(--muted);font-size:13px;cursor:pointer;transition:all .25s;margin-bottom:28px}
+.pd-back:hover{border-color:var(--gold);color:var(--gold)}
+.pd-top{display:grid;grid-template-columns:1fr 380px;gap:32px;margin-bottom:40px}
+@media(max-width:900px){.pd-top{grid-template-columns:1fr}}
+.pd-chart-area{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden}
+.pd-chart-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.pd-chart-title{font-family:var(--mono);font-size:13px;font-weight:600}
+.pd-chart-badge{padding:5px 12px;background:var(--gold-bg);border:1px solid rgba(197,165,90,.15);border-radius:8px;font-size:10px;color:var(--gold);font-family:var(--mono)}
+.pd-chart{height:400px;position:relative}.pd-chart canvas{width:100%;height:100%}
+.pd-chart-overlay{position:absolute;bottom:12px;left:12px;display:flex;gap:8px}
+.pd-chart-tag{padding:4px 10px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:6px;font-size:9px;color:var(--muted);font-family:var(--mono)}
+.pd-sidebar{display:flex;flex-direction:column;gap:20px}
+.pd-info-card{background:var(--card);border:1px solid var(--border2);border-radius:22px;padding:24px}
+.pd-product-name{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.pd-product-type{display:inline-block;padding:5px 12px;background:rgba(181,97,63,.1);border:1px solid rgba(181,97,63,.15);border-radius:8px;font-size:10px;color:var(--terra);font-family:var(--mono);font-weight:700;margin-bottom:16px}
+.pd-metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.pd-metric{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+.pd-metric .val{font-family:var(--display);font-size:20px;font-weight:700;color:var(--terra);display:block}
+.pd-metric .label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.pd-price-box{background:linear-gradient(135deg,var(--gold-bg),var(--terra-bg));border:1px solid rgba(197,165,90,.15);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
+.pd-price{font-family:var(--display);font-size:36px;font-weight:700}
+.pd-price-note{font-size:11px;color:var(--muted);margin-top:4px}
+.pd-actions{display:flex;flex-direction:column;gap:10px}
+.pd-btn-order{width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold3));border:none;border-radius:14px;color:var(--bg);font-family:var(--display);font-size:16px;font-weight:700;cursor:pointer;transition:all .25s}
+.pd-btn-order:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(197,165,90,.25)}
+.pd-btn-cart{width:100%;padding:14px;background:transparent;border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:var(--font);font-size:14px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.pd-btn-cart:hover{border-color:var(--gold);color:var(--gold)}
+.pd-warranty{display:flex;align-items:center;gap:10px;padding:12px;background:rgba(107,189,95,.05);border:1px solid rgba(107,189,95,.1);border-radius:12px;font-size:11px;color:var(--tea)}
+.pd-tabs-section{margin-bottom:40px}
+.pd-tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0}
+.pd-tab{padding:12px 24px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .25s;margin-bottom:-1px}
+.pd-tab:hover{color:var(--text2)}.pd-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.pd-tab-content{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:32px}
+.pd-tab-panel{display:none}.pd-tab-panel.active{display:block;animation:fadeInUp .4s ease}
+.pd-section-title{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.pd-section-text{font-size:14px;color:var(--muted2);line-height:1.85;margin-bottom:20px}.pd-section-text strong{color:var(--text)}
+.pd-concept-box{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.pd-concept-title{font-family:var(--display);font-size:16px;font-weight:600;color:var(--gold);margin-bottom:8px}
+.pd-concept-text{font-size:13px;color:var(--muted2);line-height:1.8}
+.pd-params-table{width:100%;border-collapse:collapse}
+.pd-params-table th{text-align:left;padding:12px 16px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+.pd-params-table td{padding:12px 16px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border)}
+.pd-params-table td:first-child{color:var(--gold);font-family:var(--mono);font-size:12px}
+.pd-comments{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:32px}
+.pd-comment-input{display:flex;gap:12px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.pd-comment-avatar{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--terra));display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:700;color:var(--bg);flex-shrink:0}
+.pd-comment-form{flex:1}
+.pd-comment-textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;color:var(--text);font-family:var(--font);font-size:13px;resize:vertical;min-height:80px;outline:none;transition:all .25s;margin-bottom:10px}
+.pd-comment-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.06)}
+.pd-comment-textarea::placeholder{color:var(--muted)}
+.pd-comment-submit{padding:10px 20px;background:var(--gold);border:none;border-radius:10px;color:var(--bg);font-weight:700;cursor:pointer;font-size:12px;transition:all .2s}
+.pd-comment-submit:hover{box-shadow:0 4px 16px rgba(197,165,90,.3)}
+.pd-comment-list{display:flex;flex-direction:column;gap:20px}
+.pd-comment{display:flex;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.pd-comment:last-child{border-bottom:none;padding-bottom:0}
+.pd-comment-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;font-weight:700;color:var(--bg);flex-shrink:0}
+.pd-comment-body{flex:1}
+.pd-comment-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pd-comment-name{font-size:14px;font-weight:600}
+.pd-comment-badge{padding:3px 8px;background:var(--gold-bg);border:1px solid rgba(197,165,90,.2);border-radius:6px;font-size:9px;color:var(--gold);font-weight:700;font-family:var(--mono)}
+.pd-comment-date{font-size:11px;color:var(--muted)}
+.pd-comment-text{font-size:13px;color:var(--muted2);line-height:1.75}
+.pd-comment-actions{display:flex;gap:16px;margin-top:10px}
+.pd-comment-action{font-size:11px;color:var(--muted);cursor:pointer;transition:color .2s;display:flex;align-items:center;gap:4px}
+.pd-comment-action:hover{color:var(--gold)}
+
+#cb-btn{position:fixed;bottom:28px;right:28px;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--terra));border:none;cursor:pointer;z-index:400;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 32px rgba(197,165,90,.2);transition:all .3s}
+#cb-btn:hover{transform:scale(1.1) rotate(-5deg)}
+#cb-box{position:fixed;bottom:96px;right:28px;width:320px;background:rgba(14,14,28,.95);backdrop-filter:blur(24px);border:1px solid var(--border3);border-radius:22px;z-index:400;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);transition:all .35s cubic-bezier(.16,1,.3,1);transform-origin:bottom right}
+#cb-box.chat-hidden{opacity:0;pointer-events:none;transform:scale(.9) translateY(12px)}
+.cb-head{padding:16px 18px;background:linear-gradient(135deg,var(--gold),var(--terra));display:flex;align-items:center;gap:10px}
+.cb-av{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(42,29,20,.6)}
+.cb-inf h4{font-size:13px;font-weight:700;color:rgba(42,29,20,.8)}.cb-inf p{font-size:9px;color:rgba(255,255,255,.4)}
+.cb-msgs{height:230px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.cb-msgs::-webkit-scrollbar{width:3px}.cb-msgs::-webkit-scrollbar-thumb{background:var(--border3)}
+.cb-msg{max-width:84%;padding:10px 14px;border-radius:14px;font-size:12px;line-height:1.6}
+.cb-bot{background:rgba(255,255,255,.03);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border)}
+.cb-user{background:linear-gradient(135deg,var(--gold),var(--terra));color:var(--bg);align-self:flex-end;border-bottom-right-radius:4px;font-weight:500}
+.cb-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border)}
+.cb-inp{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:var(--font);font-size:12px;outline:none;transition:all .2s}
+.cb-inp:focus{border-color:var(--gold)}
+.cb-send{padding:9px 14px;background:var(--gold);border:none;border-radius:10px;color:var(--bg);font-weight:700;cursor:pointer;font-size:12px;transition:all .2s}
+.cb-send:hover{box-shadow:0 0 16px rgba(197,165,90,.3)}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(14,14,28,.95);backdrop-filter:blur(16px);border:1px solid rgba(197,165,90,.15);border-radius:14px;padding:12px 24px;font-size:12.5px;color:var(--terra);z-index:9001;transition:all .35s cubic-bezier(.16,1,.3,1);font-family:var(--mono);white-space:nowrap;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#toast.toast-hidden{opacity:0;transform:translateX(-50%) translateY(24px);pointer-events:none}
+#amb-mouse{position:fixed;width:400px;height:400px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(197,165,90,0.06),transparent 70%);filter:blur(80px);transition:all 0.8s ease-out;transform:translate(-50%,-50%)}
+@media(max-width:640px){.hero-stats{grid-template-columns:repeat(2,1fr)}.hero-ctas{flex-direction:column}.cta-primary,.cta-secondary{width:100%;text-align:center}.prods-grid{grid-template-columns:1fr}.nav-center{display:none}.search-box input{width:100px}.pd-top{grid-template-columns:1fr}.pd-chart{height:280px}}
+</style>
+</head>
+<body>
+
+<div id="amb-mouse"></div>
+
+<div id="tnc-overlay">
+<div class="tnc-box">
+<div class="tnc-top">
+<div class="tnc-logo">AlgoEdge <i>Pro</i></div>
+<div class="tnc-sub">Terms & Conditions of Use</div>
+<div class="tnc-progress"><div class="tnc-progress-bar" id="tnc-bar" style="width:0%"></div></div>
+</div>
+<div class="tnc-scroll" id="tnc-scroll">
+<h1>AlgoEdge <i>Pro</i></h1>
+<div class="tnc-meta">Effective Date: April 18, 2026 | Last Updated: April 18, 2026</div>
+<h3>1. Acceptance of Terms</h3>
+<p>By accessing or using the AlgoEdge Pro website ("Website"), Instagram page, or purchasing any algorithmic trading strategy ("Algo") from us, you agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to these Terms, please do not use our services.</p>
+<p>These Terms constitute a legally binding agreement between you ("User", "Customer", "Buyer") and AlgoEdge Pro ("We", "Us", "Our").</p>
+<h3>2. Services Offered</h3>
+<p>AlgoEdge Pro provides the following services:</p>
+<ul><li>Pre-built algorithmic trading strategies for Indian stock markets (NSE/BSE) and cryptocurrency markets</li><li>Backtested performance results and reports for informational purposes</li><li>Custom algo development upon customer request via email</li><li>Free sample algorithms for educational and demonstration purposes</li></ul>
+<p>All algos are provided as a one-time purchase. We do not offer subscriptions, signals, or managed trading services.</p>
+<h3>3. No Financial or Investment Advice</h3>
+<p><strong>IMPORTANT DISCLAIMER:</strong> AlgoEdge Pro is NOT a SEBI-registered investment advisor, broker, or financial institution. Nothing on our Website, Instagram page, or any communication from us constitutes financial, investment, legal, or tax advice.</p>
+<p>All backtested results shown are based on historical data and are for informational purposes only. <strong>Past performance does not guarantee future results.</strong> Trading in financial markets involves significant risk of loss.</p>
+<ul><li>You are solely responsible for your own trading decisions</li><li>We strongly recommend consulting a SEBI-registered financial advisor before trading</li><li>Never invest money you cannot afford to lose</li></ul>
+<h3>4. Purchase & Delivery</h3>
+<h4>4.1 How to Order</h4>
+<ol><li>Customer sends an email specifying the stock, index, or asset they require the algo for</li><li>We review the request and confirm feasibility within 24-48 hours</li><li>A price quote of ₹15,000 (or as mutually agreed) is provided</li><li>Customer makes full payment before delivery</li><li>Algo is delivered via email within the agreed timeframe</li></ol>
+<h4>4.2 Payment</h4>
+<p>Payment must be made in full prior to delivery. We accept payments via UPI, bank transfer, or other mutually agreed payment methods. All prices are in Indian Rupees (INR) and are inclusive of applicable taxes unless stated otherwise.</p>
+<h4>4.3 Delivery</h4>
+<p>Algos are delivered digitally via email. Delivery timelines will be communicated at the time of order confirmation. AlgoEdge Pro is not responsible for delays caused by incorrect email addresses or technical issues on the customer's end.</p>
+<h3>5. Intellectual Property Rights</h3>
+<p>All algorithmic trading strategies, source code, Pine Script code, backtesting reports, graphics, and content created and sold by AlgoEdge Pro are the <strong>exclusive intellectual property of AlgoEdge Pro</strong>.</p>
+<p>Upon purchase, the customer is granted a limited, non-exclusive, non-transferable license to use the purchased algo for their own personal trading purposes only. The following are strictly prohibited:</p>
+<ul><li>Copying, reproducing, or reverse-engineering any algo</li><li>Sharing, selling, sublicensing, or distributing any algo to any third party</li><li>Claiming ownership or authorship of any algo</li><li>Using any algo for commercial purposes other than your own personal trading</li></ul>
+<p><strong>Violation of these intellectual property terms may result in legal action.</strong></p>
+<h3>6. Refund & Cancellation Policy</h3>
+<h4>6.1 General Policy</h4>
+<p>Due to the digital and proprietary nature of our algorithmic trading products, all sales are generally considered final upon delivery. However, AlgoEdge Pro acknowledges that exceptional circumstances may warrant a refund request, subject to the strict conditions outlined below.</p>
+<h4>6.2 Conditional Refund Eligibility</h4>
+<p>A refund request will only be considered valid if the customer can provide <strong>conclusive and verifiable proof</strong> that the purchased algo has materially underperformed. ALL of the following conditions must be met:</p>
+<ol><li>The customer must submit a detailed P&L statement from their trading platform (e.g., Zerodha, Angel One, Upstox)</li><li>The P&L proof must cover a minimum of 30 calendar days from first use</li><li>The algo must have been used strictly as delivered, without modification</li><li>The refund request must be submitted within 60 days of purchase</li><li>The customer must not have shared the algo with any third party</li></ol>
+<h4>6.3 Refund Request Process</h4>
+<p>Email us with subject: <strong>"Refund Request - Order [Your Order Reference]"</strong> including: full name, registered email, proof of payment, complete P&L report, and a brief explanation. We review within 7-10 business days.</p>
+<h4>6.4 Refund Decision</h4>
+<p>AlgoEdge Pro reserves the sole and final right to approve or reject any refund request. Approved refunds are processed within 10-14 business days via the original payment method.</p>
+<h4>6.5 Exclusion of News-Based & Fundamental Event Losses</h4>
+<p><strong>Important Notice:</strong> All algos are exclusively technical in nature. They do not account for fundamental data, macroeconomic events, or news-driven movements. Losses from the following are <strong>explicitly excluded</strong> from refund eligibility:</p>
+<ul><li>RBI monetary policy announcements, interest rate decisions</li><li>Union Budget announcements, fiscal policy changes</li><li>Quarterly/annual corporate earnings reports</li><li>SEBI regulatory actions, trading suspensions, circuit breakers</li><li>Geopolitical events, international trade developments</li><li>Stock-specific news: mergers, acquisitions, fraud allegations</li><li>Natural disasters, pandemics, war, force majeure events</li><li>Any price gaps from overnight news or sudden fundamental developments</li></ul>
+<p><strong>AlgoEdge Pro strongly recommends pausing the algo ahead of any known high-impact fundamental events.</strong></p>
+<h4>6.6 Non-Refundable Circumstances</h4>
+<ul><li>Customer failed to follow instructions or modified parameters</li><li>Losses from general market conditions or black swan events</li><li>Refund request submitted after 60 days</li><li>Insufficient or unverifiable P&L documentation</li><li>Algo shared with any third party</li><li>Free sample algo claimed as basis for refund (free products are non-refundable)</li></ul>
+<h3>7. Warranty & Guarantee</h3>
+<h4>7.1 Warranty Period</h4>
+<p>AlgoEdge Pro provides a limited warranty for <strong>10 (ten) months</strong> from delivery date, covering verifiable technical issues directly attributable to original strategy design flaws.</p>
+<h4>7.2 What the Warranty Covers</h4>
+<ul><li>Technical malfunctions causing incorrect signal generation under normal conditions</li><li>Logical errors in entry/exit conditions deviating from agreed specifications</li><li>Bugs or failures preventing the algo from executing as described</li></ul>
+<h4>7.3 What the Warranty Does Not Cover</h4>
+<ul><li>Performance dissatisfaction from normal market fluctuations</li><li>Losses from news-based or fundamental events (Section 6.5)</li><li>Customer modifications after delivery</li><li>Third-party platform/API/TradingView compatibility issues</li><li>Market regime changes reducing strategy effectiveness</li></ul>
+<h4>7.4 Expiry of Warranty</h4>
+<p><strong>Upon expiry of the 10-month warranty period, AlgoEdge Pro shall bear no responsibility whatsoever</strong> for the performance, accuracy, or functionality of the algo. Customers may enquire about paid updates.</p>
+<h3>8. Risk Warning</h3>
+<ul><li>Algorithmic trading does not guarantee profits</li><li>Market conditions change; past backtested results may not reflect future performance</li><li>You may lose some or all of your invested capital</li><li><strong>AlgoEdge Pro shall not be held liable for any trading losses</strong></li></ul>
+<h3>8.1 Limitation of Liability</h3>
+<p>To the maximum extent permitted by law, AlgoEdge Pro shall not be liable for any direct, indirect, incidental, or consequential financial losses. Total liability shall not exceed the amount paid for the specific algo.</p>
+<h4>8.1.1 Refund Scope - Purchase Amount Only</h4>
+<p><strong>Strictly Limited:</strong> If a refund is approved, AlgoEdge Pro refunds <strong>only the original purchase amount</strong>. Trading losses, missed profits, brokerage charges, taxes, or any other financial losses are <strong>not compensable</strong>.</p>
+<p><strong>Example:</strong> If a customer purchases an algo for ₹15,000 and incurs ₹50,000 in trading losses, the maximum refund is ₹15,000. The ₹50,000 is entirely the customer's own risk.</p>
+<h3>9. User Conduct</h3>
+<ul><li>No unlawful use or violation of applicable laws</li><li>No unauthorized access to our systems</li><li>No false, misleading, or defamatory reviews</li><li>No impersonation or misrepresentation</li><li>No commercial resale of free algos</li></ul>
+<h3>10. Privacy Policy</h3>
+<ul><li>We do not sell or share personal information with third parties</li><li>We do not store payment information</li><li>Email may be used for order updates (opt out anytime)</li></ul>
+<h3>11. Governing Law & Jurisdiction</h3>
+<p>These Terms shall be governed by the laws of India. Disputes shall be subject to the exclusive jurisdiction of Indian courts.</p>
+<h3>12. Amendments</h3>
+<p>AlgoEdge Pro reserves the right to update these Terms at any time without prior notice. Continued use constitutes acceptance.</p>
+<h3>13. Contact Us</h3>
+<p><strong>Email:</strong> algoedgepro@gmail.com<br><strong>Instagram:</strong>venture_assetscapatalism<br><strong>Website:</strong> www.algoedgepro.com</p>
+<p style="margin-top:20px;padding-top:14px;border-top:1px solid var(--border)">By using our website or purchasing any product, you acknowledge that you have read, understood, and agreed to these Terms & Conditions.</p>
+<p style="color:var(--gold);font-size:10px;margin-top:8px">© 2026 AlgoEdge Pro. All rights reserved. | algoedgepro@gmail.com | www.algoedgepro.com</p>
+</div>
+<div class="tnc-bottom">
+<label class="tnc-check"><input type="checkbox" id="tnc-cb"> I have read and agree to all Terms & Conditions</label>
+<button class="btn-decline" id="btn-decline">✕ Decline</button>
+<button class="btn-accept" id="btn-accept" disabled>✓ Accept All</button>
+</div>
+</div>
+</div>
+
+<div id="blocked" class="hidden">
+<div style="font-size:72px;margin-bottom:8px;filter:drop-shadow(0 0 20px rgba(239,68,68,.3))">🚫</div>
+<h2 style="font-family:var(--display);font-size:32px;color:var(--red)">Access Denied</h2>
+<p style="color:var(--muted2);max-width:400px;line-height:1.7">You must accept our Terms & Conditions to access AlgoEdge Pro.</p>
+<button id="btn-review-tnc" style="margin-top:12px;padding:13px 28px;background:transparent;border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:var(--font);font-size:14px;cursor:pointer">Review Terms Again</button>
+</div>
+
+<div id="auth-screen" class="hidden">
+<div class="auth-container">
+<div class="auth-left-panel">
+<div class="brand">AlgoEdge <i>Pro</i></div>
+<h1>Trade smarter with <em>AI-powered algos</em></h1>
+<p>Professional-grade algorithmic trading strategies for Indian markets and crypto.</p>
+<div class="auth-left-stats">
+<div class="als"><label>Win Rate</label><span>80%+</span></div>
+<div class="als"><label>Algos Sold</label><span>500+</span></div>
+<div class="als"><label>Avg RR</label><span>1:2</span></div>
+</div>
+</div>
+<div class="auth-right-panel">
+<div class="auth-card">
+<div class="auth-tabs">
+<div class="auth-tab active" id="tab-login">Login</div>
+<div class="auth-tab" id="tab-signup">Sign Up</div>
+</div>
+<div id="form-login">
+<div class="form-group"><label>Phone Number</label><div class="ph-row"><div class="ph-pfx">+91</div><input class="inp" type="tel" placeholder="Enter mobile number"></div></div>
+<div class="form-group"><label>Password</label><input class="inp" type="password" placeholder="Enter password"><div class="forgot-link" id="forgot-link">Forgot Password?</div></div>
+<button class="main-btn" id="btn-login">Login to AlgoEdge →</button>
+</div>
+<div id="form-signup" class="hidden">
+<div class="form-group"><label>Full Name</label><input class="inp" type="text" placeholder="Your full name"></div>
+<div class="form-group"><label>Phone Number</label><div class="ph-row"><div class="ph-pfx">+91</div><input class="inp" type="tel" placeholder="Enter mobile number"></div></div>
+<div class="form-group"><label>Email Address</label><input class="inp" type="email" placeholder="your@email.com"></div>
+<button class="main-btn" id="btn-signup">Get OTP & Register →</button>
+</div>
+<div class="divider">or continue with</div>
+<button class="google-btn" id="btn-google">
+<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.877 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-1.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+Sign in with Google
+</button>
+<div class="auth-disclaimer">By continuing, you confirm you have accepted our Terms & Conditions.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="product-detail" class="hidden">
+<div class="pd-container">
+<button class="pd-back" id="pd-back-btn">← Back to Algos</button>
+<div class="pd-top">
+<div class="pd-chart-area">
+<div class="pd-chart-header"><div class="pd-chart-title" id="pd-chart-symbol"></div><div class="pd-chart-badge">Pine Script v6</div></div>
+<div class="pd-chart"><canvas id="pd-chart-canvas"></canvas></div>
+<div class="pd-chart-overlay">
+<div class="pd-chart-tag" id="pd-tag-tf"></div>
+<div class="pd-chart-tag" id="pd-tag-ind"></div>
+<div class="pd-chart-tag" id="pd-tag-perf"></div>
+</div>
+</div>
+<div class="pd-sidebar">
+<div class="pd-info-card">
+<div class="pd-product-name" id="pd-name"></div>
+<div class="pd-product-type" id="pd-type"></div>
+<div class="pd-metrics-grid">
+<div class="pd-metric"><span class="val" id="pd-wr"></span><span class="label">Win Rate</span></div>
+<div class="pd-metric"><span class="val" id="pd-rr"></span><span class="label">Risk Reward</span></div>
+<div class="pd-metric"><span class="val" id="pd-dd"></span><span class="label">Max Drawdown</span></div>
+<div class="pd-metric"><span class="val" id="pd-pft"></span><span class="label">Net Profit</span></div>
+</div>
+<div class="pd-price-box"><div class="pd-price" id="pd-price"></div><div class="pd-price-note">One-time payment</div></div>
+<div class="pd-actions">
+<button class="pd-btn-order" id="pd-btn-order">Place Order →</button>
+<button class="pd-btn-cart" id="pd-btn-cart">🛒 Add to Cart</button>
+</div>
+<div class="pd-warranty"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>10-month technical warranty included</span></div>
+</div>
+</div>
+</div>
+<div class="pd-tabs-section">
+<div class="pd-tabs" id="pd-tabs"></div>
+<div class="pd-tab-content">
+<div class="pd-tab-panel active" id="pd-tab-0"><div class="pd-section-title">Overview</div><div class="pd-section-text" id="pd-overview"></div></div>
+<div class="pd-tab-panel" id="pd-tab-1"><div class="pd-section-title">Core Concepts</div><div id="pd-concepts"></div></div>
+<div class="pd-tab-panel" id="pd-tab-2"><div class="pd-section-title">Strategy Parameters</div><table class="pd-params-table"><thead><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead><tbody id="pd-params-body"></tbody></table></div>
+</div>
+</div>
+<div class="pd-comments">
+<div class="pd-section-title">Comments & Feedback</div>
+<div class="pd-comment-input">
+<div class="pd-comment-avatar">N</div>
+<div class="pd-comment-form">
+<textarea class="pd-comment-textarea" id="comment-textarea" placeholder="Share your experience or ask a question..."></textarea>
+<button class="pd-comment-submit" id="btn-post-comment">Post Comment</button>
+</div>
+</div>
+<div class="pd-comment-list" id="pd-comments-list"></div>
+</div>
+</div>
+</div>
+
+<div id="app" class="hidden">
+<nav id="main-nav">
+<div class="nav-logo" id="nav-logo-home">AlgoEdge <i>Pro</i></div>
+<div class="nav-center">
+<div class="nav-lnk on" id="nl-home">Home</div>
+<div class="nav-lnk" id="nl-market">Market</div>
+<div class="nav-lnk" id="nl-myalgo">My Algos</div>
+</div>
+<div class="nav-right">
+<div class="search-box">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6b6b80" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input type="text" placeholder="Search algos..." id="srch">
+</div>
+<div class="nav-icon-btn" id="btn-cart-icon">🛒<span class="badge" id="cart-n">0</span></div>
+<div class="user-av">N</div>
+</div>
+</nav>
+<div id="pg-home" class="page">
+<div class="hero">
+<div class="hero-badge anim-up"><div class="pulse-dot"></div>Live — 500+ Algos Delivered</div>
+<h1 class="anim-up d1">Premium Algo Trading<br><span class="g">Strategies & Indicators</span></h1>
+<p class="hero-sub anim-up d2">Battle-tested algorithms for NSE, BSE & Crypto. Backtested on 5+ years of real data.</p>
+<div class="hero-ctas anim-up d3">
+<button class="cta-primary" id="btn-browse">Browse Algos →</button>
+<button class="cta-secondary" id="btn-live-market">Live Market</button>
+</div>
+<div class="hero-stats anim-up d4">
+<div class="hs"><span class="n">80%+</span><span class="l">Win Rate</span></div>
+<div class="hs"><span class="n">1:2</span><span class="l">Risk Reward</span></div>
+<div class="hs"><span class="n">500+</span><span class="l">Customers</span></div>
+<div class="hs"><span class="n">10mo</span><span class="l">Warranty</span></div>
+</div>
+</div>
+<div class="market-section anim-up d5">
+<div class="sec-label">Select Market</div>
+<div class="market-pills" id="market-pills"></div>
+</div>
+<div class="filters anim-up d6" id="filters-row"></div>
+<div class="prods-wrap" id="prods-section">
+<div class="prods-head"><div class="prods-cnt">Showing <b id="pc">0</b> results</div></div>
+<div class="prods-grid" id="pgrid"></div>
+</div>
+<div class="reviews-sec">
+<div class="sec-title">Client Reviews</div>
+<div class="sec-sub">Trusted by traders across India</div>
+<div class="reviews-grid" id="rgrid"></div>
+</div>
+<footer class="footer">
+<div class="footer-brand"><h3>AlgoEdge <i>Pro</i></h3><p>India's premium algorithmic trading strategy marketplace.</p></div>
+<div class="footer-col"><h4>Company</h4><a>About Us</a><a>How It Works</a><a>Blog</a><a>Careers</a></div>
+<div class="footer-col"><h4>Legal</h4><a>Terms & Conditions</a><a>Privacy Policy</a><a>Refund Policy</a><a>Disclaimer</a></div>
+<div class="footer-col"><h4>Contact</h4><a>algoedgepro@gmail.com</a><a>@AlgoEdgePro</a><a>FAQ</a><a>Support</a></div>
+</footer>
+<div class="footer-bar"><p>© 2026 AlgoEdge Pro. All rights reserved.</p><div class="pay-row"><span class="paybadge">UPI</span><span class="paybadge">GPay</span><span class="paybadge">PhonePe</span></div></div>
+</div>
+<div id="pg-market" class="page hidden"><div id="market-page"><div class="page-hdr"><h2>Live Market</h2><p>Real-time Indian market & crypto overview</p></div><div class="mkt-grid" id="mkt-grid"></div></div></div>
+<div id="pg-myalgo" class="page hidden"><div id="my-algo-page"><div class="page-hdr"><h2>My Algos</h2><p>Your purchased strategies with Pine Script v6 source code</p></div><div class="myalgo-grid" id="myalgo-grid"></div></div></div>
+</div>
+
+<div id="cart-drawer">
+<div class="cart-hdr"><h3>Cart</h3><button class="cart-x" id="cart-close-btn">✕</button></div>
+<div class="cart-body" id="cart-body"></div>
+<div class="cart-footer" id="cart-foot" style="display:none"></div>
+</div>
+
+<button id="cb-btn">🤖</button>
+<div id="cb-box" class="chat-hidden">
+<div class="cb-head"><div class="cb-av">🤖</div><div class="cb-inf"><h4>AlgoEdge Assistant</h4><p>Online</p></div></div>
+<div class="cb-msgs" id="cb-msgs"><div class="cb-msg cb-bot">Hi! Ask me anything about our strategies or pricing! 👋</div></div>
+<div class="cb-input-row"><input class="cb-inp" id="cb-inp" placeholder="Ask anything..."><button class="cb-send" id="cb-send-btn">→</button></div>
+</div>
+
+<div id="toast" class="toast-hidden"></div>
+
+<script>
+(function(){
+"use strict";
+
+var PRODS=[
+{id:1,name:"RELIANCE Momentum Pro",desc:"High-precision momentum strategy for Reliance with EMA crossover and volume confirmation.",type:"strategy",mkt:"stock",sec:"Energy",wr:"84%",rr:"1:2.5",dd:"8%",pft:"70-80",price:15000,tags:["15min","EMA","Volume"],rt:4.8,rv:124,symbol:"RELIANCE",tf:"15min",indicators:"EMA + Volume + RSI",
+overview:'<p><strong>RELIANCE Momentum Pro</strong> is optimized for Reliance Industries on the 15-minute timeframe with triple EMA crossover, volume confirmation, and RSI divergence detection.</p>',
+concepts:[{title:"EMA Crossover",text:"Triple EMA (8/21/50) confirms trend direction across multiple timeframes."},{title:"Volume Confirmation",text:"Volume must exceed 20-period average before generating signals."},{title:"RSI Divergence",text:"RSI divergence from price signals impending reversals."},{title:"ATR Risk Management",text:"Dynamic stop-loss and take-profit based on current volatility."}],
+params:[["ema_fast","8","Fast EMA"],["ema_medium","21","Medium EMA"],["ema_slow","50","Slow EMA"],["rsi_period","14","RSI period"],["atr_period","14","ATR period"],["sl_mult","1.2","SL multiplier"],["tp_mult","2.4","TP multiplier"],["vol_period","20","Volume avg period"]],
+code:'//@version=6\nstrategy("RELIANCE Momentum Pro | AlgoEdge Pro", overlay=true,\n     initial_capital=100000, default_qty_type=strategy.percent_of_equity,\n     default_qty_value=10, commission_value=0.1)\n\nemaF = ta.ema(close, 8)\nemaS = ta.ema(close, 21)\nemaT = ta.ema(close, 50)\nrsi = ta.rsi(close, 14)\n[st, stDir] = ta.supertrend(2.5, 10)\nvwap_v = ta.vwap(hlc3)\natr = ta.atr(14)\nvol_avg = ta.sma(volume, 20)\n\nlongEntry = emaF > emaS and emaS > emaT and rsi > 50 and rsi < 72 and close > vwap_v and stDir == -1 and volume > vol_avg\nshortEntry = emaF < emaS and emaS < emaT and rsi < 50 and rsi > 28 and close < vwap_v and stDir == 1 and volume > vol_avg\n\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=strategy.position_avg_price - atr*1.2, limit=strategy.position_avg_price + atr*2.4)\n\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=strategy.position_avg_price + atr*1.2, limit=strategy.position_avg_price - atr*2.4)\n\nplot(emaF, color=color.green, linewidth=1)\nplot(emaS, color=color.amber, linewidth=2)\nplot(emaT, color=color.orange, linewidth=2)\nplot(vwap_v, color=color.blue, style=plot.style_circles)\nplot(st, color=stDir == -1 ? color.green : color.red, linewidth=2)',
+comments:[{name:"AlgoEdge Pro",badge:"MOD",date:"2 days ago",text:"Extensively backtested on 5 years of RELIANCE data.",likes:24},{name:"Rahul Sharma",badge:"",date:"1 day ago",text:"Made 12% on my capital in 3 weeks. Excellent!",likes:18}]},
+{id:2,name:"NIFTY Scalper X",desc:"Ultra-fast scalping for NIFTY 50 futures with 1-minute precision.",type:"strategy",mkt:"index",sec:"Finance",wr:"78%",rr:"1:1.5",dd:"5%",pft:"60-70",price:18000,tags:["1min","Scalping","Futures"],rt:4.6,rv:89,symbol:"NIFTY",tf:"1min",indicators:"EMA + Supertrend",overview:'<p><strong>NIFTY Scalper X</strong> generates multiple signals per day on the 1-minute timeframe using fast EMA crossovers and Supertrend confirmation.</p>',concepts:[{title:"Scalping",text:"Taking small profits from numerous trades throughout the day."}],params:[["ema_fast","5","Fast EMA"],["ema_slow","13","Slow EMA"],["sl_points","15","SL points"],["tp_points","22","TP points"]],code:'//@version=6\nstrategy("NIFTY Scalper X | AlgoEdge Pro", overlay=true)\nemaF = ta.ema(close, 5)\nemaS = ta.ema(close, 13)\n[st, stDir] = ta.supertrend(2.5, 10)\nlongEntry = ta.crossover(emaF, emaS) and stDir == -1\nshortEntry = ta.crossunder(emaF, emaS) and stDir == 1\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close - 15, limit=close + 22)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close + 15, limit=close - 22)\nplot(emaF, color=color.green, linewidth=1)\nplot(emaS, color=color.red, linewidth=1)\nplot(st, color=stDir == -1 ? color.green : color.red, linewidth=2)',comments:[{name:"Vikram Singh",badge:"",date:"2 days ago",text:"Consistent 2-3% daily returns.",likes:22}]},
+{id:3,name:"TCS Mean Reversion",desc:"Mean reversion for TCS with Bollinger Bands and RSI.",type:"strategy",mkt:"stock",sec:"Technology",wr:"81%",rr:"1:2",dd:"7%",pft:"70-80",price:15000,tags:["30min","Bollinger","RSI"],rt:4.7,rv:76,symbol:"TCS",tf:"30min",indicators:"Bollinger + RSI",overview:'<p><strong>TCS Mean Reversion</strong> capitalizes on TCS tendency to revert to its mean price. Perfect for range-bound markets.</p>',concepts:[{title:"Mean Reversion",text:"Prices tend to return to their historical average over time."}],params:[["bb_period","20","BB period"],["bb_std","2","Std dev"],["rsi_period","14","RSI period"]],code:'//@version=6\nstrategy("TCS Mean Reversion | AlgoEdge Pro", overlay=true)\n[middle, upper, lower] = ta.bb(close, 20, 2)\nrsi = ta.rsi(close, 14)\nlongEntry = close < lower and rsi < 30\nshortEntry = close > upper and rsi > 70\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close * 0.98, limit=middle)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close * 1.02, limit=middle)\nplot(upper, color=color.red, linewidth=1)\nplot(middle, color=color.blue, linewidth=1)\nplot(lower, color=color.green, linewidth=1)',comments:[]},
+{id:4,name:"BANKNIFTY Volatility Edge",desc:"Volatility-based strategy for BankNIFTY options with ATR.",type:"strategy",mkt:"index",sec:"Finance",wr:"76%",rr:"1:3",dd:"10%",pft:"80-95",price:22000,tags:["5min","ATR","Options"],rt:4.9,rv:156,symbol:"BANKNIFTY",tf:"5min",indicators:"ATR + Supertrend",overview:'<p><strong>BANKNIFTY Volatility Edge</strong> adapts to changing volatility regimes for options traders.</p>',concepts:[{title:"Volatility Trading",text:"ATR gauges realized volatility for optimal positioning."}],params:[["atr_period","14","ATR period"],["st_period","10","Supertrend period"],["vol_threshold","1.5","Vol threshold"]],code:'//@version=6\nstrategy("BANKNIFTY Volatility Edge | AlgoEdge Pro", overlay=true)\natr = ta.atr(14)\n[st, stDir] = ta.supertrend(10, 3)\nvol_ratio = atr / ta.sma(atr, 50)\nlongEntry = stDir == -1 and vol_ratio > 1.5\nshortEntry = stDir == 1 and vol_ratio > 1.5\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long, qty=25)\n    strategy.exit("XL", stop=close - atr*2, limit=close + atr*6)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short, qty=25)\n    strategy.exit("XS", stop=close + atr*2, limit=close - atr*6)\nplot(st, color=stDir == -1 ? color.green : color.red, linewidth=2)',comments:[]},
+{id:5,name:"Bitcoin Trend Master",desc:"Trend following for BTC/USD with 4H MACD.",type:"strategy",mkt:"crypto",sec:"Crypto",wr:"72%",rr:"1:4",dd:"15%",pft:"80-95",price:20000,tags:["4H","MACD","Trend"],rt:4.5,rv:67,symbol:"BTC/USD",tf:"4H",indicators:"MACD + EMA",overview:'<p><strong>Bitcoin Trend Master</strong> captures major BTC trends using MACD and EMA on the 4-hour chart.</p>',concepts:[{title:"MACD Divergence",text:"MACD divergence signals potential trend exhaustion."}],params:[["ema_fast","12","Fast EMA"],["ema_slow","26","Slow EMA"],["atr_period","14","ATR period"]],code:'//@version=6\nstrategy("Bitcoin Trend Master | AlgoEdge Pro", overlay=true)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nemaF = ta.ema(close, 12)\nemaS = ta.ema(close, 26)\natr = ta.atr(14)\nlongEntry = ta.crossover(macdLine, signalLine) and emaF > emaS\nshortEntry = ta.crossunder(macdLine, signalLine) and emaF < emaS\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close - atr*3, limit=close + atr*12)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close + atr*3, limit=close - atr*12)\nplot(emaF, color=color.green, linewidth=1)\nplot(emaS, color=color.red, linewidth=1)',comments:[]},
+{id:6,name:"Ethereum Swing Pro",desc:"Swing trading for ETH with EMA and stochastic.",type:"strategy",mkt:"crypto",sec:"Crypto",wr:"79%",rr:"1:2.5",dd:"11%",pft:"70-80",price:18000,tags:["1H","EMA","Stochastic"],rt:4.4,rv:54,symbol:"ETH/USD",tf:"1H",indicators:"EMA + Stochastic",overview:'<p><strong>Ethereum Swing Pro</strong> combines EMA trend identification with Stochastic oscillator for ETH swing trades.</p>',concepts:[{title:"Stochastic",text:"Measures current price relative to its range, identifying overbought/oversold conditions."}],params:[["ema_fast","9","Fast EMA"],["ema_slow","21","Slow EMA"],["stoch_k","14","%K period"]],code:'//@version=6\nstrategy("Ethereum Swing Pro | AlgoEdge Pro", overlay=true)\nemaF = ta.ema(close, 9)\nemaS = ta.ema(close, 21)\nk = ta.sma(ta.stoch(close, high, low, 14), 3)\nd = ta.sma(k, 3)\nlongEntry = emaF > emaS and k < 20 and k > d\nshortEntry = emaF < emaS and k > 80 and k < d\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close * 0.97, limit=close * 1.06)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close * 1.03, limit=close * 0.94)\nplot(emaF, color=color.green, linewidth=1)\nplot(emaS, color=color.red, linewidth=1)',comments:[]},
+{id:7,name:"INFOSYS Breakout Alpha",desc:"Breakout detection for Infosys with pivots and volume.",type:"strategy",mkt:"stock",sec:"Technology",wr:"82%",rr:"1:2",dd:"6%",pft:"70-80",price:15000,tags:["15min","Breakout","Volume"],rt:4.6,rv:98,symbol:"INFOSYS",tf:"15min",indicators:"Pivot + Volume",overview:'<p><strong>INFOSYS Breakout Alpha</strong> identifies high-probability breakouts using pivot points and volume analysis.</p>',concepts:[{title:"Pivot Points",text:"Key S/R levels from previous high, low, close."}],params:[["pivot_lb","5","Pivot lookback"],["vol_mult","1.5","Volume multiplier"]],code:'//@version=6\nstrategy("INFOSYS Breakout Alpha | AlgoEdge Pro", overlay=true)\npivot_high = ta.pivothigh(high, 5, 5)\npivot_low = ta.pivotlow(low, 5, 5)\natr = ta.atr(14)\nvol_avg = ta.sma(volume, 20)\nlongEntry = high > pivot_high[1] and volume > vol_avg * 1.5\nshortEntry = low < pivot_low[1] and volume > vol_avg * 1.5\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close - atr*1.5, limit=close + atr*3)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close + atr*1.5, limit=close - atr*3)\nplot(pivot_high, color=color.red, style=plot.style_cross, linewidth=2)\nplot(pivot_low, color=color.green, style=plot.style_cross, linewidth=2)',comments:[]},
+{id:8,name:"HDFC Bank Value Play",desc:"Value-based strategy for HDFC Bank with hybrid approach.",type:"strategy",mkt:"stock",sec:"Finance",wr:"77%",rr:"1:1.8",dd:"9%",pft:"60-70",price:15000,tags:["Daily","Value","Hybrid"],rt:4.3,rv:45,symbol:"HDFCBANK",tf:"Daily",indicators:"PE + EMA",overview:'<p><strong>HDFC Bank Value Play</strong> combines fundamental valuation with technical analysis.</p>',concepts:[{title:"Value Investing",text:"Buying underpriced stocks based on fundamental metrics."}],params:[["ema_period","50","EMA period"]],code:'//@version=6\nstrategy("HDFC Bank Value Play | AlgoEdge Pro", overlay=true)\nema = ta.ema(close, 50)\nlongEntry = close < ema and close > ta.lowest(close, 50) * 1.05\nshortEntry = close > ema and close < ta.highest(close, 50) * 0.95\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close * 0.95, limit=close * 1.10)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close * 1.05, limit=close * 0.90)\nplot(ema, color=color.blue, linewidth=2)',comments:[]},
+{id:9,name:"SmallCap Edge (FREE)",desc:"Free sample strategy with RSI and MACD.",type:"strategy",mkt:"stock",sec:"Technology",wr:"68%",rr:"1:1.5",dd:"12%",pft:"50-60",price:0,tags:["30min","RSI","MACD"],rt:4.0,rv:312,symbol:"SMALL CAP",tf:"30min",indicators:"RSI + MACD",overview:'<p><strong>SmallCap Edge</strong> is our free sample. Use this to evaluate our code quality before purchasing.</p>',concepts:[{title:"RSI + MACD",text:"Dual-confirmation system for robust signals."}],params:[["rsi_period","14","RSI period"],["macd_fast","12","MACD fast"],["macd_slow","26","MACD slow"]],code:'//@version=6\nstrategy("SmallCap Edge (FREE) | AlgoEdge Pro", overlay=true)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nrsi = ta.rsi(close, 14)\nlongEntry = ta.crossover(macdLine, signalLine) and rsi < 40\nshortEntry = ta.crossunder(macdLine, signalLine) and rsi > 60\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close * 0.97, limit=close * 1.05)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close * 1.03, limit=close * 0.95)',comments:[{name:"NewTrader",badge:"",date:"1 week ago",text:"Perfect free sample! Bought RELIANCE strategy after testing.",likes:42}]},
+{id:10,name:"SUN PHARMA Pharma Pulse",desc:"Sector-specific for Sun Pharma with healthcare correlation.",type:"strategy",mkt:"stock",sec:"Pharma",wr:"80%",rr:"1:2",dd:"8%",pft:"70-80",price:15000,tags:["15min","Sector"],rt:4.5,rv:62,symbol:"SUNPHARMA",tf:"15min",indicators:"Sector + EMA",overview:'<p><strong>SUN PHARMA Pharma Pulse</strong> leverages healthcare sector momentum.</p>',concepts:[{title:"Sector Correlation",text:"Stocks in same sector often move together."}],params:[["ema_fast","8","Fast EMA"],["ema_slow","21","Slow EMA"]],code:'//@version=6\nstrategy("SUN PHARMA Pharma Pulse | AlgoEdge Pro", overlay=true)\nemaF = ta.ema(close, 8)\nemaS = ta.ema(close, 21)\nsector_momentum = ta.rsi(close, 20)\nlongEntry = emaF > emaS and sector_momentum > 55\nshortEntry = emaF < emaS and sector_momentum < 45\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close * 0.98, limit=close * 1.04)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close * 1.02, limit=close * 0.96)\nplot(emaF, color=color.green, linewidth=1)\nplot(emaS, color=color.red, linewidth=1)',comments:[]},
+{id:11,name:"HAL Defence Momentum",desc:"Defence sector momentum for HAL.",type:"strategy",mkt:"stock",sec:"Defence",wr:"75%",rr:"1:2",dd:"10%",pft:"60-70",price:15000,tags:["30min","Momentum"],rt:4.2,rv:38,symbol:"HAL",tf:"30min",indicators:"Momentum",overview:'<p><strong>HAL Defence Momentum</strong> captures defence sector momentum plays.</p>',concepts:[{title:"Momentum",text:"Price rate of change indicates trend strength."}],params:[["mom_period","10","Momentum period"],["ema_period","20","EMA period"]],code:'//@version=6\nstrategy("HAL Defence Momentum | AlgoEdge Pro", overlay=true)\nmomentum = close / close[10] - 1\nema = ta.ema(close, 20)\natr = ta.atr(14)\nlongEntry = momentum > 0.03 and close > ema\nshortEntry = momentum < -0.03 and close < ema\nif longEntry and strategy.position_size == 0\n    strategy.entry("LONG", strategy.long)\n    strategy.exit("XL", stop=close - atr*2, limit=close + atr*4)\nif shortEntry and strategy.position_size == 0\n    strategy.entry("SHORT", strategy.short)\n    strategy.exit("XS", stop=close + atr*2, limit=close - atr*4)\nplot(ema, color=color.blue, linewidth=2)',comments:[]},
+{id:12,name:"VWAP Precision Indicator",desc:"Advanced VWAP with standard deviation bands.",type:"indicator",mkt:"stock",sec:"Finance",wr:"N/A",rr:"N/A",dd:"N/A",pft:"N/A",price:5000,tags:["VWAP","Volume"],rt:4.7,rv:203,symbol:"ANY",tf:"Intraday",indicators:"VWAP + StdDev",overview:'<p><strong>VWAP Precision</strong> is an advanced VWAP with standard deviation bands for intraday traders.</p>',concepts:[{title:"VWAP",text:"Volume Weighted Average Price — institutional benchmark."}],params:[["std1","1","First std mult"],["std2","2","Second std mult"]],code:'//@version=6\nindicator("VWAP Precision | AlgoEdge Pro", overlay=true)\nvwap_v = ta.vwap(hlc3)\nstd1 = ta.stdev(hlc3, 20) * 1\nstd2 = ta.stdev(hlc3, 20) * 2\nplot(vwap_v, color=color.blue, linewidth=2)\nplot(vwap_v + std1, color=color.new(color.blue, 70), linewidth=1)\nplot(vwap_v - std1, color=color.new(color.blue, 70), linewidth=1)\nplot(vwap_v + std2, color=color.new(color.blue, 85), linewidth=1)\nplot(vwap_v - std2, color=color.new(color.blue, 85), linewidth=1)',comments:[{name:"DayTrader",badge:"",date:"3 days ago",text:"Must-have for intraday. Dynamic S/R bands.",likes:35}]},
+{id:13,name:"Supertrend Pro Indicator",desc:"Enhanced Supertrend with MTF analysis.",type:"indicator",mkt:"index",sec:"Finance",wr:"N/A",rr:"N/A",dd:"N/A",pft:"N/A",price:4000,tags:["Supertrend","ATR","MTF"],rt:4.5,rv:178,symbol:"NIFTY",tf:"Any",indicators:"Supertrend + EMA",overview:'<p><strong>Supertrend Pro</strong> enhances standard Supertrend with multi-timeframe confirmation.</p>',concepts:[{title:"Supertrend",text:"Trend-following indicator using ATR for adaptive signals."}],params:[["st_period","10","ST period"],["st_mult","3","ATR mult"]],code:'//@version=6\nindicator("Supertrend Pro | AlgoEdge Pro", overlay=true)\n[st, stDir] = ta.supertrend(3, 10)\nhtf_ema = ta.ema(close, 50)\nbullish = stDir == -1 and close > htf_ema\nbearish = stDir == 1 and close < htf_ema\nplot(st, color=stDir == -1 ? color.green : color.red, linewidth=2)\nplot(htf_ema, color=color.new(color.blue, 50), linewidth=1)\nbgcolor(bullish ? color.new(color.green, 95) : na)\nbgcolor(bearish ? color.new(color.red, 95) : na)',comments:[]},
+{id:14,name:"Crypto Volume Delta",desc:"Volume delta indicator for crypto order flow.",type:"indicator",mkt:"crypto",sec:"Crypto",wr:"N/A",rr:"N/A",dd:"N/A",pft:"N/A",price:6000,tags:["Volume","Delta"],rt:4.3,rv:89,symbol:"BTC/ETH",tf:"Any",indicators:"Volume Delta",overview:'<p><strong>Crypto Volume Delta</strong> shows buying vs selling volume difference for market direction insights.</p>',concepts:[{title:"Volume Delta",text:"Net buying vs selling pressure indicator."}],params:[["delta_period","20","Smoothing period"]],code:'//@version=6\nindicator("Crypto Volume Delta | AlgoEdge Pro", overlay=false)\nbuy_vol = volume * (close > open ? 0.6 : 0.4)\nsell_vol = volume - buy_vol\ndelta = buy_vol - sell_vol\ndelta_ma = ta.sma(delta, 20)\nthreshold = ta.stdev(delta, 20) * 1.5\nplot(delta, color=delta > 0 ? color.green : color.red, linewidth=1)\nplot(delta_ma, color=color.blue, linewidth=2)\nplot(threshold, color=color.new(color.gray, 50), linewidth=1)\nplot(-threshold, color=color.new(color.gray, 50), linewidth=1)\nhline(0, color=color.gray, linewidth=1)',comments:[]}
+];
+
+var REVIEWS=[
+{n:"Rahul Sharma",l:"Mumbai",t:"The NIFTY Scalper X transformed my intraday trading. Consistent profits every week.",a:"NIFTY Scalper X",rt:5,c:"linear-gradient(135deg,#C5A55A,#d47a5a)"},
+{n:"Priya Patel",l:"Ahmedabad",t:"RELIANCE Momentum Pro exceeded all backtest results. Made 2.3x my investment.",a:"RELIANCE Momentum Pro",rt:5,c:"linear-gradient(135deg,#6bbd5f,#5a9cf0)"},
+{n:"Arjun Reddy",l:"Hyderabad",t:"10-month warranty gives peace of mind. Fixed within 24 hours.",a:"BANKNIFTY Volatility Edge",rt:4,c:"linear-gradient(135deg,#5a9cf0,#d47a5a)"},
+{n:"Meera Krishnan",l:"Chennai",t:"Code quality is professional-grade. Started with free sample, bought TCS strategy.",a:"TCS Mean Reversion",rt:5,c:"linear-gradient(135deg,#d47a5a,#C5A55A)"},
+{n:"Vikram Singh",l:"Jaipur",t:"Bitcoin Trend Master caught the last major move perfectly.",a:"Bitcoin Trend Master",rt:4,c:"linear-gradient(135deg,#C5A55A,#6bbd5f)"},
+{n:"Ananya Das",l:"Kolkata",t:"VWAP indicator is incredibly accurate. Win rate jumped to 72%.",a:"VWAP Precision Indicator",rt:5,c:"linear-gradient(135deg,#6bbd5f,#C5A55A)"}
+];
+
+var MKT=[
+{n:"NIFTY 50",v:"22,456.80",c:"+1.24%",up:true},{n:"BANKNIFTY",v:"48,234.50",c:"+0.87%",up:true},
+{n:"RELIANCE",v:"2,845.30",c:"+2.15%",up:true},{n:"TCS",v:"3,892.60",c:"-0.45%",up:false},
+{n:"INFOSYS",v:"1,567.20",c:"+1.67%",up:true},{n:"HDFC BANK",v:"1,623.80",c:"+0.32%",up:true},
+{n:"SUN PHARMA",v:"1,234.50",c:"-1.23%",up:false},{n:"HAL",v:"4,567.90",c:"+3.45%",up:true},
+{n:"BTC/USD",v:"$67,234",c:"+2.89%",up:true},{n:"ETH/USD",v:"$3,456",c:"+1.56%",up:true},
+{n:"S&P 500",v:"5,234.67",c:"+0.45%",up:true},{n:"GOLD",v:"$2,345",c:"+0.67%",up:true}
+];
+
+var MKT_PILLS=[{k:"all",l:"All Markets"},{k:"stock",l:"Indian Stocks (NSE/BSE)"},{k:"index",l:"Indian Index"},{k:"crypto",l:"Crypto"}];
+var FILTERS=[{id:"f-type",opts:["Type: All","strategy","indicator"]},{id:"f-sector",opts:["Sector: All","Finance","Technology","Energy","Pharma","Defence"]},{id:"f-profit",opts:["Profit: All","50-60","60-70","70-80","80-95"]},{id:"f-rr",opts:["RR: All","1:1","1:2","1:3","1:4","1:5"]}];
+
+var cart=[];var myAlgos=[];var curMkt="all";var svgN=0;var curDetail=null;var toastTimer=null;
+
+function $(id){return document.getElementById(id);}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function showToast(msg){
+var t=$("toast");t.textContent=msg;t.classList.remove("toast-hidden");
+if(toastTimer)clearTimeout(toastTimer);
+toastTimer=setTimeout(function(){t.classList.add("toast-hidden");},2500);
+}
+function genPath(pts){var mx=Math.max.apply(null,pts),mn=Math.min.apply(null,pts),norm=pts.map(function(v){return((v-mn)/(mx-mn))*80+10;});return norm.map(function(v,j){return(j===0?"M":"L")+(j/(norm.length-1))*100+","+(100-v);}).join(" ");}
+function stars(r){var s="";for(var i=0;i<5;i++)s+='<span class="'+(i<Math.floor(r)?"s":"")+'">★</span>';return s;}
+
+ $("tnc-scroll").addEventListener("scroll",function(){
+var el=this;var p=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;
+ $("tnc-bar").style.width=Math.min(p,100)+"%";
+});
+ $("tnc-cb").addEventListener("change",function(){$("btn-accept").disabled=!this.checked;});
+ $("btn-accept").addEventListener("click",function(){if(this.disabled)return;$("tnc-overlay").classList.add("hidden");$("auth-screen").classList.remove("hidden");});
+ $("btn-decline").addEventListener("click",function(){$("tnc-overlay").classList.add("hidden");$("blocked").classList.remove("hidden");});
+ $("btn-review-tnc").addEventListener("click",function(){$("blocked").classList.add("hidden");$("tnc-overlay").classList.remove("hidden");$("tnc-cb").checked=false;$("btn-accept").disabled=true;$("tnc-scroll").scrollTop=0;$("tnc-bar").style.width="0%";});
+
+ $("tab-login").addEventListener("click",function(){switchAuthTab(0);});
+ $("tab-signup").addEventListener("click",function(){switchAuthTab(1);});
+function switchAuthTab(i){$("tab-login").classList.toggle("active",i===0);$("tab-signup").classList.toggle("active",i===1);$("form-login").classList.toggle("hidden",i!==0);$("form-signup").classList.toggle("hidden",i!==1);}
+ $("forgot-link").addEventListener("click",function(){showToast("Password reset link sent to your email");});
+ $("btn-login").addEventListener("click",function(){enterApp();});
+ $("btn-signup").addEventListener("click",function(){enterApp();});
+ $("btn-google").addEventListener("click",function(){enterApp();});
+function enterApp(){$("auth-screen").classList.add("hidden");$("app").classList.remove("hidden");buildMarketPills();buildFilters();renderProds(PRODS);renderReviews();renderMkt();renderMyAlgos();init3D();showToast("Welcome to AlgoEdge Pro!");}
+
+window.addEventListener("scroll",function(){$("main-nav").classList.toggle("scrolled",window.scrollY>20);});
+ $("nav-logo-home").addEventListener("click",function(){showPage("home");});
+ $("nl-home").addEventListener("click",function(){showPage("home");});
+ $("nl-market").addEventListener("click",function(){showPage("market");});
+ $("nl-myalgo").addEventListener("click",function(){showPage("myalgo");});
+function showPage(p){["home","market","myalgo"].forEach(function(x){$("pg-"+x).classList.add("hidden");$("nl-"+x).classList.remove("on");});$("pg-"+p).classList.remove("hidden");$("nl-"+p).classList.add("on");if(p==="myalgo")renderMyAlgos();window.scrollTo({top:0,behavior:"smooth"});}
+ $("btn-browse").addEventListener("click",function(){$("prods-section").scrollIntoView({behavior:"smooth",block:"start"});});
+ $("btn-live-market").addEventListener("click",function(){showPage("market");});
+
+document.addEventListener("mousemove",function(e){var m=$("amb-mouse");m.style.left=(e.clientX-200)+"px";m.style.top=(e.clientY-200)+"px";},{passive:true});
+
+function buildMarketPills(){
+var c=$("market-pills");
+c.innerHTML=MKT_PILLS.map(function(p,i){return '<div class="mpill'+(i===0?" on":"")+'" data-mkt="'+p.k+'"><div class="mdot"></div>'+p.l+'</div>';}).join("");
+c.querySelectorAll(".mpill").forEach(function(el){el.addEventListener("click",function(){curMkt=this.dataset.mkt;c.querySelectorAll(".mpill").forEach(function(b){b.classList.remove("on");});this.classList.add("on");filterProds();});});
+}
+
+function buildFilters(){
+var c=$("filters-row");var h='<span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em">Filters</span>';
+FILTERS.forEach(function(f){h+='<select class="fsel" id="'+f.id+'">';f.opts.forEach(function(o,i){h+='<option value="'+(i===0?"":o)+'">'+o+'</option>';});h+='</select>';});
+h+='<button class="fclear" id="btn-clear-filters">✕ Clear</button>';c.innerHTML=h;
+FILTERS.forEach(function(f){$(f.id).addEventListener("change",function(){filterProds();});});
+ $("btn-clear-filters").addEventListener("click",function(){FILTERS.forEach(function(f){$(f.id).value="";});$("srch").value="";filterProds();});
+ $("srch").addEventListener("input",function(){filterProds();});
+}
+function filterProds(){
+var q=$("srch").value.toLowerCase();var ft=$("f-type").value;var fs=$("f-sector").value;var fp=$("f-profit").value;var fr=$("f-rr").value;
+var list=PRODS.filter(function(p){
+if(curMkt!=="all"&&p.mkt!==curMkt)return false;
+if(q&&p.name.toLowerCase().indexOf(q)<0&&p.desc.toLowerCase().indexOf(q)<0&&p.symbol.toLowerCase().indexOf(q)<0)return false;
+if(ft&&p.type!==ft)return false;if(fs&&p.sec!==fs)return false;
+if(fp){var r=fp.split("-");if(p.pft!=="N/A"&&r.length===2){var v=parseInt(p.pft);if(v<parseInt(r[0])||v>parseInt(r[1]))return false;}}
+if(fr&&p.rr!==fr)return false;return true;
+});renderProds(list);
+}
+
+function renderProds(list){
+var grid=$("pgrid");$("pc").textContent=list.length;
+if(!list.length){grid.innerHTML='<div class="no-res"><h3>No results found</h3><p>Try adjusting filters.</p></div>';return;}
+svgN++;
+grid.innerHTML=list.map(function(p,i){
+var pts=[];for(var j=0;j<20;j++)pts.push(30+Math.sin(j*.7)*15+Math.random()*10+j*1.5);
+var d=genPath(pts);var col=p.type==="strategy"?"#B5613F":"#6bbd5f";var gid="g"+svgN+"_"+p.id;
+var badge=p.price===0?'<div class="pbadge pbadge-free">FREE</div>':'<div class="pbadge '+(p.type==="strategy"?"pbadge-s":"pbadge-i")+'">'+p.type.toUpperCase()+'</div>';
+var priceStr=p.price===0?"FREE":"₹"+p.price.toLocaleString();
+var met=p.type==="indicator"?'<div class="pcm"><span class="v" style="color:var(--blue)">N/A</span><span class="k">Type</span></div><div class="pcm"><span class="v" style="color:var(--blue)">'+p.rv+'</span><span class="k">Users</span></div><div class="pcm"><span class="v" style="color:var(--blue)">'+p.rt+'</span><span class="k">Rating</span></div>'
+:'<div class="pcm"><span class="v">'+p.wr+'</span><span class="k">Win Rate</span></div><div class="pcm"><span class="v">'+p.rr+'</span><span class="k">Risk/Reward</span></div><div class="pcm"><span class="v">'+p.dd+'</span><span class="k">Drawdown</span></div>';
+return '<div class="pcard-wrap" style="animation:fadeInUp .5s cubic-bezier(.16,1,.3,1) '+(i*0.04)+'s both"><div class="pcard" data-pid="'+p.id+'"><div class="pcard-preview" style="background:linear-gradient(135deg,rgba(255,255,255,.02),rgba(20,20,35,.04))"><svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.6"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+col+'" stop-opacity=".3"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs><path d="'+d+'" L100,100 L0,100 Z" fill="url(#'+gid+')" /><path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="0.5" opacity="0.8"/></svg><div class="pcard-badges">'+badge+'</div></div><div class="pcard-body"><div class="pc-name">'+p.name+'</div><div class="pc-desc">'+p.desc+'</div><div class="pc-tags">'+p.tags.map(function(t){return'<span class="pc-tag">'+t+'</span>';}).join("")+'</div><div class="pc-metrics">'+met+'</div><div class="pc-footer"><span class="pc-price">'+priceStr+'</span><div class="pc-btns"><div class="pc-cart" data-cart="'+p.id+'">🛒</div><button class="pc-order" data-order="'+p.id+'">Order</button></div></div></div></div></div>';
+}).join("");
+init3D();
+grid.querySelectorAll(".pcard").forEach(function(el){el.addEventListener("click",function(e){if(e.target.closest(".pc-cart")||e.target.closest(".pc-order"))return;openDetail(parseInt(this.dataset.pid));});});
+grid.querySelectorAll(".pc-cart").forEach(function(el){el.addEventListener("click",function(e){e.stopPropagation();addToCart(parseInt(this.dataset.cart));});});
+grid.querySelectorAll(".pc-order").forEach(function(el){el.addEventListener("click",function(e){e.stopPropagation();quickOrder(parseInt(this.dataset.order));});});
+}
+
+function init3D(){
+document.querySelectorAll(".pcard").forEach(function(card){
+card.addEventListener("mousemove",function(e){var r=this.getBoundingClientRect();var x=e.clientX-r.left;var y=e.clientY-r.top;var cx=r.width/2;var cy=r.height/2;var rx=(y-cy)/cy*-8;var ry=(x-cx)/cx*8;this.style.transform="rotateX("+rx+"deg) rotateY("+ry+"deg)";});
+card.addEventListener("mouseleave",function(){this.style.transform="rotateX(0) rotateY(0)";});
+});
+}
+
+function renderReviews(){$("rgrid").innerHTML=REVIEWS.map(function(r){return '<div class="rcard"><div class="rcard-top"><div class="rav" style="background:'+r.c+'">'+r.n.charAt(0)+'</div><div><div class="rname">'+r.n+'</div><div class="rloc">'+r.l+'</div></div></div><div class="rstars">'+stars(r.rt)+'</div><div class="rtext">"'+r.t+'"</div><div class="ralgo">→ '+r.a+'</div></div>';}).join("");}
+
+function renderMkt(){$("mkt-grid").innerHTML=MKT.map(function(m){return '<div class="mkt-card"><div class="mkt-name">'+m.n+'</div><div class="mkt-val">'+m.v+'</div><div class="mkt-chg '+(m.up?"up":"dn")+'">'+m.c+'</div></div>';}).join("");}
+
+function addToCart(id){
+var p=PRODS.find(function(x){return x.id===id;});if(!p)return;
+if(p.price===0){myAlgos.push(p);showToast("Free algo added to My Algos!");return;}
+if(cart.find(function(x){return x.id===id;})){showToast("Already in cart");return;}
+cart.push(p);updateCart();showToast(p.name+" added to cart");
+}
+function quickOrder(id){addToCart(id);openCart();}
+ $("btn-cart-icon").addEventListener("click",function(){openCart();});
+ $("cart-close-btn").addEventListener("click",function(){closeCart();});
+function openCart(){$("cart-drawer").classList.add("open");updateCart();}
+function closeCart(){$("cart-drawer").classList.remove("open");}
+function updateCart(){
+ $("cart-n").textContent=cart.length;var body=$("cart-body");var foot=$("cart-foot");
+if(!cart.length){body.innerHTML='<div class="empty-cart">🛒<br><br>Cart is empty</div>';foot.style.display="none";return;}
+body.innerHTML=cart.map(function(p,i){return '<div class="ci"><div class="ci-info"><div class="ci-name">'+p.name+'</div><div class="ci-price">₹'+p.price.toLocaleString()+'</div></div><button class="ci-rm" data-rm="'+i+'">✕</button></div>';}).join("");
+body.querySelectorAll(".ci-rm").forEach(function(el){el.addEventListener("click",function(){cart.splice(parseInt(this.dataset.rm),1);updateCart();});});
+var total=cart.reduce(function(s,p){return s+p.price;},0);
+foot.style.display="block";
+foot.innerHTML='<div class="ctot"><span>Subtotal</span><span>₹'+total.toLocaleString()+'</span></div><div class="ctot"><span>GST (18%)</span><span>₹'+Math.round(total*0.18).toLocaleString()+'</span></div><div class="ctot big"><span>Total</span><span class="p">₹'+Math.round(total*1.18).toLocaleString()+'</span></div><button class="checkout-btn" id="btn-checkout">Checkout → Pay via UPI</button>';
+ $("btn-checkout").addEventListener("click",function(){cart.forEach(function(p){if(!myAlgos.find(function(a){return a.id===p.id;}))myAlgos.push(p);});var t=cart.reduce(function(s,p){return s+p.price;},0);cart=[];updateCart();closeCart();showToast("Order placed! Total: ₹"+Math.round(t*1.18).toLocaleString());});
+}
+
+function openDetail(id){
+var p=PRODS.find(function(x){return x.id===id;});if(!p)return;curDetail=p;
+ $("pd-chart-symbol").textContent=p.symbol+" • "+p.tf;
+ $("pd-name").textContent=p.name;$("pd-type").textContent=p.type.toUpperCase();
+ $("pd-wr").textContent=p.wr;$("pd-rr").textContent=p.rr;$("pd-dd").textContent=p.dd;$("pd-pft").textContent=p.pft!=="N/A"?p.pft+"%":"N/A";
+ $("pd-price").textContent=p.price===0?"FREE":"₹"+p.price.toLocaleString();
+ $("pd-tag-tf").textContent="TF: "+p.tf;$("pd-tag-ind").textContent="Indicators: "+p.indicators;
+ $("pd-tag-perf").textContent=p.wr!=="N/A"?"WR: "+p.wr:"Users: "+p.rv;
+ $("pd-overview").innerHTML=p.overview;
+ $("pd-concepts").innerHTML=p.concepts.map(function(c){return '<div class="pd-concept-box"><div class="pd-concept-title">'+c.title+'</div><div class="pd-concept-text">'+c.text+'</div></div>';}).join("");
+ $("pd-params-body").innerHTML=p.params.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join("");
+ $("pd-comments-list").innerHTML=p.comments.map(function(c){
+var bg=c.badge==="MOD"?"linear-gradient(135deg,#C5A55A,#d47a5a)":"linear-gradient(135deg,#6bbd5f,#5a9cf0)";
+return '<div class="pd-comment"><div class="pd-comment-av" style="background:'+bg+'">'+c.name.charAt(0)+'</div><div class="pd-comment-body"><div class="pd-comment-header"><span class="pd-comment-name">'+c.name+'</span>'+(c.badge?'<span class="pd-comment-badge">'+c.badge+'</span>':'')+'<span class="pd-comment-date">'+c.date+'</span></div><div class="pd-comment-text">'+c.text+'</div><div class="pd-comment-actions"><span class="pd-comment-action">👍 '+c.likes+'</span><span class="pd-comment-action">💬 Reply</span></div></div></div>';
+}).join("");
+var tabsEl=$("pd-tabs");
+tabsEl.innerHTML=["Overview","Concepts","Parameters"].map(function(t,i){return '<div class="pd-tab'+(i===0?" active":"")+'" data-ti="'+i+'">'+t+'</div>';}).join("");
+tabsEl.querySelectorAll(".pd-tab").forEach(function(el){
+el.addEventListener("click",function(){tabsEl.querySelectorAll(".pd-tab").forEach(function(t){t.classList.remove("active");});this.classList.add("active");for(var i=0;i<3;i++)$("pd-tab-"+i).classList.toggle("active",i===parseInt(this.dataset.ti));});
+});
+ $("product-detail").classList.remove("hidden");document.body.style.overflow="hidden";drawChart(p);
+}
+ $("pd-back-btn").addEventListener("click",function(){$("product-detail").classList.add("hidden");document.body.style.overflow="";curDetail=null;});
+ $("pd-btn-order").addEventListener("click",function(){if(!curDetail)return;var p=curDetail;if(p.price===0){myAlgos.push(p);showToast("Free algo added to My Algos!");return;}addToCart(p.id);openCart();});
+ $("pd-btn-cart").addEventListener("click",function(){if(curDetail)addToCart(curDetail.id);});
+ $("btn-post-comment").addEventListener("click",function(){
+var ta=$("comment-textarea");if(!ta.value.trim()){showToast("Please enter a comment");return;}
+var list=$("pd-comments-list");
+var html='<div class="pd-comment"><div class="pd-comment-av" style="background:linear-gradient(135deg,var(--gold),var(--terra))">N</div><div class="pd-comment-body"><div class="pd-comment-header"><span class="pd-comment-name">You</span><span class="pd-comment-date">Just now</span></div><div class="pd-comment-text">'+esc(ta.value)+'</div><div class="pd-comment-actions"><span class="pd-comment-action">👍 0</span><span class="pd-comment-action">💬 Reply</span></div></div></div>';
+list.insertAdjacentHTML("beforeend",html);ta.value="";showToast("Comment posted!");
+});
+
+function drawChart(p){
+var canvas=$("pd-chart-canvas");var rect=canvas.parentElement.getBoundingClientRect();
+canvas.width=rect.width*2;canvas.height=rect.height*2;canvas.style.width=rect.width+"px";canvas.style.height=rect.height+"px";
+var ctx=canvas.getContext("2d");ctx.scale(2,2);var w=rect.width;var h=rect.height;
+var pts=[];var val=200;for(var i=0;i<80;i++){val+=Math.sin(i*.3)*8+Math.random()*6-3+(Math.random()>0.5?2:-1);pts.push(val);}
+var mn=Math.min.apply(null,pts);var mx=Math.max.apply(null,pts);var range=mx-mn||1;
+ctx.clearRect(0,0,w,h);ctx.strokeStyle="rgba(90,156,240,0.08)";ctx.lineWidth=0.5;
+for(var g=0;g<8;g++){var gy=g*(h/8);ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
+var col=p.type==="strategy"?"#B5613F":"#6bbd5f";
+ctx.beginPath();ctx.strokeStyle=col;ctx.lineWidth=1.5;
+pts.forEach(function(v,i){var x=i/(pts.length-1)*w;var y=h-((v-mn)/range)*(h-40)-20;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});ctx.stroke();
+var grad=ctx.createLinearGradient(0,0,0,h);
+grad.addColorStop(0,col.replace(")",",0.15)").replace("rgb","rgba"));grad.addColorStop(1,"transparent");
+ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+}
+
+function renderMyAlgos(){
+var grid=$("myalgo-grid");
+if(!myAlgos.length){grid.innerHTML='<div class="no-res"><h3>No purchased algos yet</h3><p>Browse our collection and place your first order.</p></div>';return;}
+grid.innerHTML=myAlgos.map(function(p){
+var infoItems='';
+if(p.type==="strategy"){
+infoItems='<div class="mac-info-item"><div class="mi-label">Win Rate</div><div class="mi-val">'+p.wr+'</div></div><div class="mac-info-item"><div class="mi-label">Risk/Reward</div><div class="mi-val">'+p.rr+'</div></div><div class="mac-info-item"><div class="mi-label">Max Drawdown</div><div class="mi-val">'+p.dd+'</div></div><div class="mac-info-item"><div class="mi-label">Net Profit</div><div class="mi-val">'+p.pft+'%</div></div>';
+}else{
+infoItems='<div class="mac-info-item"><div class="mi-label">Type</div><div class="mi-val">Indicator</div></div><div class="mac-info-item"><div class="mi-label">Users</div><div class="mi-val">'+p.rv+'</div></div><div class="mac-info-item"><div class="mi-label">Rating</div><div class="mi-val">'+p.rt+'/5</div></div><div class="mac-info-item"><div class="mi-label">Timeframe</div><div class="mi-val">'+p.tf+'</div></div>';
+}
+return '<div class="mac"><div class="mac-name">'+p.name+'</div><div class="mac-meta">'+p.symbol+' • '+p.tf+' • '+p.type.toUpperCase()+' • '+p.indicators+'</div><div class="mac-info-grid">'+infoItems+'</div><button class="dl-btn" data-dlid="'+p.id+'">📥 Download Pine Script v6 File</button></div>';
+}).join("");
+grid.querySelectorAll(".dl-btn").forEach(function(el){
+el.addEventListener("click",function(){
+var p=myAlgos.find(function(a){return a.id==this.dataset.dlid;}.bind(this));if(!p)return;
+var blob=new Blob([p.code],{type:"text/plain"});var a=document.createElement("a");
+a.href=URL.createObjectURL(blob);a.download=p.name.replace(/\s+/g,"_")+"_v6.pine";a.click();showToast("Downloading "+p.name+"...");
+});
+});
+}
+
+var chatResponses={pricing:"Our algos start from ₹4,000 for indicators and ₹15,000 for strategies. The BANKNIFTY Volatility Edge is our premium at ₹22,000.",refund:"We offer conditional refunds within 60 days with verifiable P&L proof. See our Terms & Conditions section 6 for full details.",warranty:"All paid algos come with a 10-month technical warranty covering code bugs and logical errors.",free:"Yes! We have a 'SmallCap Edge (FREE)' algo you can try. It demonstrates our code quality before purchasing.",version:"All our algos use Pine Script v6, the latest version on TradingView.",contact:"Email us at algoedgepro@gmail.com or DM venture_assetscapatalism on Instagram. We respond within 24 hours.",delivery:"Algos are delivered digitally via email within 48 hours of payment confirmation."};
+ $("cb-btn").addEventListener("click",function(){$("cb-box").classList.toggle("chat-hidden");});
+ $("cb-send-btn").addEventListener("click",sendChat);
+ $("cb-inp").addEventListener("keypress",function(e){if(e.key==="Enter")sendChat();});
+function sendChat(){
+var inp=$("cb-inp");var msg=inp.value.trim();if(!msg)return;
+var msgs=$("cb-msgs");msgs.insertAdjacentHTML("beforeend",'<div class="cb-msg cb-user">'+esc(msg)+'</div>');inp.value="";
+var lower=msg.toLowerCase();var reply="Thanks for your question! For detailed queries, please email algoedgepro@gmail.com";
+Object.keys(chatResponses).forEach(function(k){if(lower.indexOf(k)!==-1)reply=chatResponses[k];});
+setTimeout(function(){msgs.insertAdjacentHTML("beforeend",'<div class="cb-msg cb-bot">'+reply+'</div>');msgs.scrollTop=msgs.scrollHeight;},500);msgs.scrollTop=msgs.scrollHeight;
+}
+
+document.addEventListener("click",function(e){if($("cart-drawer").classList.contains("open")&&!$("cart-drawer").contains(e.target)&&!$("btn-cart-icon").contains(e.target)){closeCart();}});
+
+})();
+</script>
+</body>
+</html>
