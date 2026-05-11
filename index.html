@@ -858,9 +858,53 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = window.supabase.createClient(
   supabaseUrl,
   supabaseKey
-)
+);
+console.log("Supabase Connected Successfully");
+</script>
+<div class="auth-box">
+  <input type="email" id="email" placeholder="Enter Email">
+  <input type="password" id="password" placeholder="Enter Password">
 
-console.log("Supabase Connected Successfully")
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+async function signup() {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Signup successful! Check your email.");
+    console.log(data);
+  }
+}
+
+async function login() {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Login successful!");
+    console.log(data);
+  }
+}
 </script>
 </body>
 </html>
